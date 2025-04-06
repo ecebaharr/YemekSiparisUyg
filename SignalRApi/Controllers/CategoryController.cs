@@ -22,7 +22,7 @@ namespace SignalRApi.Controllers
         [HttpGet]
         public IActionResult CategoryList()
         {
-            var value= _mapper.Map<List<ResultCategoryDto>>(_categoryService.TGetAll());
+            var value = _mapper.Map<List<ResultCategoryDto>>(_categoryService.TGetAll());
             return Ok(value);
         }
         [HttpPost]
@@ -39,7 +39,7 @@ namespace SignalRApi.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id)
         {
           var value=  _categoryService.TGetbyID( id );
@@ -47,7 +47,7 @@ namespace SignalRApi.Controllers
             return Ok("Kategori başarıyla silindi.");
         }
 
-        [HttpGet("GetCategory")]
+        [HttpGet("{id}")]
 
         public IActionResult GetCategory(int id)
         {
