@@ -5,15 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using SignalR.EntityLayer.Entities;
 
-namespace SignalR.DataAccessLayer.Abstract
+namespace SignalR.BusinessLayer.Abstract
 {
-   public interface IOrderDal:IGenericDal<Order>
+    public interface IOrderService : IGenericService<Order>
     {
+        int TTotalOrderCount();
         int TActiveOrderCount();
-        int ActiveOrderCount();
-        decimal LastOrderPrice();
-        decimal TodayTotalPrice();
-
+        decimal TLastOrderPrice();
+        decimal TTodayTotalPrice();
     }
-  
 }
