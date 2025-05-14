@@ -72,6 +72,9 @@ builder.Services.AddScoped<ISliderDal, EfSliderDal>();
 
 builder.Services.AddScoped<IBasketService, BasketManager>();
 builder.Services.AddScoped<IBasketDal, EfBasketDal>();
+
+builder.Services.AddScoped<INotificationService, NotificationManager>();
+builder.Services.AddScoped<INotificationDal, EfNotificationDal>();
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
@@ -90,7 +93,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 

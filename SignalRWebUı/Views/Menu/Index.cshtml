@@ -126,18 +126,31 @@
 
     <script>
         function showproductid(value) {
-            var id= value;
-            $.ajax ({
-                type:'post',
-                data: { item: id },
-				url: "/Menu/AddBasket/" + id,
-                contentType:'json',
-                success:function () {
-                    swal("Seçilen ürün ID:"+ id, "Seçtiğiniz ürün sepete eklendi!", "success" );
+            $.ajax({
+                type: 'POST',
+                url: '/Menu/AddBasket/' + value,
+                success: function () {
+                    swal({
+                        title: "Ürün Eklendi!",
+                        text: "Ürün başarıyla sepete eklendi.",
+                        icon: "success",
+                        buttons: {
+                            cancel: "Menüye Dön",
+                            confirm: "Sepete Git"
+                        }
+                    }).then((goToBasket) => {
+                        if (goToBasket) {
+                            window.location.href = "/Baskets/Index";
+                        }
+                    });
+                },
+                error: function () {
+                    swal("Hata", "Sepete eklenirken sorun oluştu.", "error");
                 }
             });
-        };
+        }
     </script>
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </body>

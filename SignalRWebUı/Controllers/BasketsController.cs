@@ -13,6 +13,7 @@ namespace SignalRWebUı.Controllers
         }
         public async Task<IActionResult> Index(int id)
         {
+
             
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("http://localhost:5044/api/Basket/BasketListByMenuTableWithProductName?id=7");
@@ -23,6 +24,18 @@ namespace SignalRWebUı.Controllers
                 return View(values);
             }
             return View();
+        }
+        
+        public async Task<IActionResult> DeleteBasket(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.DeleteAsync($"http://localhost:5044/api/Basket/{id}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return NoContent();
+
         }
     }
 }

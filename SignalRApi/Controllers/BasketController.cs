@@ -26,6 +26,8 @@ namespace SignalRApi.Controllers
             var values = _basketService.TGetBasketByMenuTableNumber(id);
             return Ok(values);
         }
+
+
         [HttpGet("BasketListByMenuTableWithProductName")]
         public IActionResult BasketListByMenuTableWithProductName(int id)
         {
@@ -42,6 +44,8 @@ namespace SignalRApi.Controllers
             }).ToList();
             return Ok(values);
         }
+
+
         [HttpPost]
         public IActionResult CreateBasket(CreateBasketDto createBasketDto)
         {
@@ -56,6 +60,15 @@ namespace SignalRApi.Controllers
                 TotalPrice = createBasketDto.TotalPrice,
             });
             return Ok();
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBasket(int id)
+        {
+            var value = _basketService.TGetbyID(id);
+            _basketService.TDelete(value);
+            return Ok("Sepetteki Seçilen Ürün Silindi");
         }
     }
 }
