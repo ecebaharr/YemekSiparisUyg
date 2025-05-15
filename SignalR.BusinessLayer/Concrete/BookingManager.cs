@@ -49,6 +49,8 @@ namespace SignalR.BusinessLayer.Concrete
             return _bookingDal.GetbyID(id);
         }
 
+        
+
         public void TUpdate(Booking entity)
         {
             _bookingDal.Update(entity);
