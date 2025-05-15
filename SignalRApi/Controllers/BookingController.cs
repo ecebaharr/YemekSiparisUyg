@@ -24,22 +24,31 @@ namespace SignalRApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateBooking (CreateBookingDto createBookingDto)
+        public IActionResult CreateBooking(CreateBookingDto createBookingDto)
         {
-            Booking booking = new Booking()
+            // 💡 Eğer Description boşsa, varsayılan değer ver
+            if (string.IsNullOrEmpty(createBookingDto.Description))
             {
-                Mail= createBookingDto.Mail,
+                createBookingDto.Description = "Açıklama girilmedi.";
+            }
+
+            // 🎯 Booking entity'sini oluştur
+            var booking = new Booking
+            {
+                Mail = createBookingDto.Mail,
                 Date = createBookingDto.Date,
                 Name = createBookingDto.Name,
                 PersonCount = createBookingDto.PersonCount,
-                Phone = createBookingDto.Phone
+                Phone = createBookingDto.Phone,
+                Description = createBookingDto.Description // ✅ unutma!
             };
 
-           _bookingService.TAdd(booking);
+            // ✅ Veritabanına ekle
+            _bookingService.TAdd(booking);
 
             return Ok("Rezervasyonunuz başarıyla oluşturulmuştur. Sağlıcakla kalın!");
-
         }
+
         [HttpDelete("{id}")]
         public IActionResult DeleteBooking(int id)
         {
@@ -68,6 +77,18 @@ namespace SignalRApi.Controllers
         {
             var values = _bookingService.TGetbyID(id);
             return Ok(values);
+        }
+        [HttpGet("BookingStatusApproved/{id}")]
+        public IActionResult BookingStatusApproved(int id)
+        {
+            _bookingService.BookingStatusApproved(id);
+            return Ok("Rezervasyon Açıklaması Değiştirildi");
+        }
+        [HttpGet("BookingStatusCancelled/{id}")]
+        public IActionResult BookingStatusCancelled(int id)
+        {
+            _bookingService.BookingStatusCancelled(id);
+            return Ok("Rezervasyon Açıklaması Değiştirildi");
         }
 
     }

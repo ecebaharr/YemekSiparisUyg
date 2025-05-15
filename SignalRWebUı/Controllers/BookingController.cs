@@ -8,80 +8,96 @@ namespace SignalRWebUı.Controllers
 {
     public class BookingController : Controller
     {
-       
-            private readonly IHttpClientFactory _httpClientFactory;
 
-            public BookingController(IHttpClientFactory httpClientFactory)
-            {
-                _httpClientFactory = httpClientFactory;
-            }
+        private readonly IHttpClientFactory _httpClientFactory;
 
-            public async Task<IActionResult> Index()
+        public BookingController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("http://localhost:5044/api/Booking");
+            if (responseMessage.IsSuccessStatusCode)
             {
-                var client = _httpClientFactory.CreateClient();
-                var responseMessage = await client.GetAsync("http://localhost:5044/api/Booking");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultBookingDto>>(jsonData);
-                    return View(values);
-                }
-                return View();
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<List<ResultBookingDto>>(jsonData);
+                return View(values);
             }
-            [HttpGet]
-            public IActionResult CreateBooking()
+            return View();
+        }
+        [HttpGet]
+        public IActionResult CreateBooking()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateBooking(CreateBookingDto createBookingDto)
+        {
+            createBookingDto.Description = "Rezervasyon Alındı";
+            var client = _httpClientFactory.CreateClient();
+            var jsonData = JsonConvert.SerializeObject(createBookingDto);
+            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var responseMessage = await client.PostAsync("http://localhost:5044/api/Booking", stringContent);
+
+            if (responseMessage.IsSuccessStatusCode)
             {
-                return View();
+                return RedirectToAction("Index");
             }
-            [HttpPost]
-            public async Task<IActionResult> CreateBooking(CreateBookingDto createBookingDto)
+            return View();
+        }
+        public async Task<IActionResult> DeleteBooking(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.DeleteAsync($"http://localhost:5044/api/Booking/{id}");
+            if (responseMessage.IsSuccessStatusCode)
             {
-                var client = _httpClientFactory.CreateClient();
-                var jsonData = JsonConvert.SerializeObject(createBookingDto);
-                StringContent StringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var responseMessage = client.PostAsync("http://localhost:5044/api/Booking", StringContent).Result;
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View();
+                return RedirectToAction("Index");
             }
-            public async Task<IActionResult> DeleteBooking(int id)
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateBooking(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"http://localhost:5044/api/Booking/{id}");
+            if (responseMessage.IsSuccessStatusCode)
             {
-                var client = _httpClientFactory.CreateClient();
-                var responseMessage = await client.DeleteAsync($"http://localhost:5044/api/Booking/{id}");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View();
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<UpdateBookingDto>(jsonData);
+                return View(values);
             }
-            [HttpGet]
-            public async Task<IActionResult> UpdateBooking(int id)
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateBooking(UpdateBookingDto updateBookingDto)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var jsonData = JsonConvert.SerializeObject(updateBookingDto);
+            StringContent StringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var responseMessage = await client.PutAsync("http://localhost:5044/api/Booking", StringContent);
+            if (responseMessage.IsSuccessStatusCode)
             {
-                var client = _httpClientFactory.CreateClient();
-                var responseMessage = await client.GetAsync($"http://localhost:5044/api/Booking/{id}");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<UpdateBookingDto>(jsonData);
-                    return View(values);
-                }
-                return View();
+                return RedirectToAction("Index");
             }
-            [HttpPost]
-            public async Task<IActionResult> UpdateBooking(UpdateBookingDto updateBookingDto)
-            {
-                var client = _httpClientFactory.CreateClient();
-                var jsonData = JsonConvert.SerializeObject(updateBookingDto);
-                StringContent StringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var responseMessage = await client.PutAsync("http://localhost:5044/api/Booking", StringContent);
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View();
-            }
+            return View();
+        }
+        public async Task<IActionResult> BookingStatusApproved(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            await client.GetAsync($"http://localhost:5044/api/Booking/BookingStatusApproved/{id}");
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> BookingStatusCancelled(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            await client.GetAsync($"http://localhost:5044/api/Booking/BookingStatusCancelled/{id}");
+            return RedirectToAction("Index");
         }
     }
+}
+    
 
