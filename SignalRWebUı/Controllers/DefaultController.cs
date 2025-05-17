@@ -17,21 +17,16 @@ namespace SignalRWebUı.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var client = _httpClientFactory.CreateClient();
-            //var responseMessage = await client.GetAsync("https://localhost:7186/api/Contact");
-            //var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            ////var values = JsonConvert.DeserializeObject<ResultContactDto>(jsonData);
-            //JsonObject item=JsonObject.Parse(jsonData);
-            //ViewBag.location = jsonData[0].ToString();
 
-            //HttpClient client = new HttpClient();
-            //HttpResponseMessage response = await client.GetAsync("http://localhost:5044/api/Contact");
-            //response.EnsureSuccessStatusCode();
-            //string responseBody = await response.Content.ReadAsStringAsync();
-            //JArray item = JArray.Parse(responseBody);
-            //string value = item[0]["location"].ToString();
-            //ViewBag.location = value;
+           HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync("http://localhost:5044/api/Contact");
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            JArray item = JArray.Parse(responseBody);
+            string value = item[0]["location"].ToString();
+            ViewBag.location = value;
             return View();
+
         }
 
         [HttpGet]

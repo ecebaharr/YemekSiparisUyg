@@ -6,9 +6,8 @@ using SignalRWebUı.Dtos.IdentityDtos;
 
 namespace SignalRWebUı.Controllers
 {
-   
-        [AllowAnonymous]
-        public class LoginController : Controller
+    [AllowAnonymous]
+    public class LoginController : Controller
         {
             private readonly SignInManager<AppUser> _signInManager;
             public LoginController(SignInManager<AppUser> signInManager)

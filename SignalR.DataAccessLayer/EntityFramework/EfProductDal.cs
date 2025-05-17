@@ -98,7 +98,9 @@ namespace SignalR.DataAccessLayer.EntityFramework
 
         public List<Product> GetLast9Products()
         {
-            throw new NotImplementedException();
+            var context = new SignalRContext();
+            var values = context.Products.Take(9).ToList();
+            return values;
         }
 
         public decimal TotalProductPrice()
