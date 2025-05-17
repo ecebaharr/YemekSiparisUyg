@@ -30,20 +30,8 @@ namespace SignalRApi.Controllers
         public IActionResult CreateContact(CreateContactDto createContactDto)
 
         {
-            _contactService.TAdd(new Contact()
-            {
-               
-                FooterDescripton = createContactDto.FooterDescripton,
-                Location = createContactDto.Location,
-                Mail = createContactDto.Mail,
-                Phone = createContactDto.Phone,
-                FooterTitle = createContactDto.FooterTitle,
-                OpenDays = createContactDto.OpenDays,
-                OpenDaysDescripton = createContactDto.OpenDaysDescripton,
-                OpenHours = createContactDto.OpenHours
-
-            }
-                );
+            var value = _mapper.Map<Contact>(createContactDto);
+            _contactService.TAdd(value);
             return Ok("İletişim bilgileri başarıyla sisteme eklendi.");
 
         }
@@ -61,26 +49,14 @@ namespace SignalRApi.Controllers
         public IActionResult GetContact(int id)
         {
             var value = _contactService.TGetbyID(id);
-
-            return Ok(value);
+            return Ok(_mapper.Map<GetContactDto>(value));
         }
 
         [HttpPut]
         public IActionResult UpdateContact(UpdateContactDto updateContactDto)
         {
-            _contactService.TUpdate(new Contact()
-            {
-                ContactID = updateContactDto.ContactID,
-               FooterDescripton = updateContactDto.FooterDescripton,
-               Location = updateContactDto.Location,
-               Mail = updateContactDto.Mail,
-               Phone = updateContactDto.Phone,
-                FooterTitle = updateContactDto.FooterTitle,
-                OpenDays = updateContactDto.OpenDays,
-                OpenDaysDescripton = updateContactDto.OpenDaysDescripton,
-                OpenHours = updateContactDto.OpenHours
-            }
-                );
+            var value = _mapper.Map<Contact>(updateContactDto);
+            _contactService.TUpdate(value);
             return Ok("İletişim bilgileri başarıyla güncellendi.");
 
         }
