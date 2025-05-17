@@ -57,8 +57,8 @@ namespace SignalRApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetMessage(int id)
         {
-            var result = _messageService.TGetbyID(id);
-            return Ok(result);
+            var value = _messageService.TGetbyID(id);
+            return Ok(_mapper.Map<GetByIdMessageDto>(value));
         }
 
 
