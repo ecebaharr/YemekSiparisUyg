@@ -2,10 +2,12 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.BusinessLayer.Concrete;
+
 using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.Concrete;
 using SignalR.DataAccessLayer.EntityFramework;
 using SignalRApi.Hubs;
+using SignalRApi.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,19 +16,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("CorsPolicy", builder =>
-        
-        {
-            builder.AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetIsOriginAllowed((host) => true)
-                .AllowCredentials();
-
-        });
+    {
+        builder.AllowAnyHeader()
+               .AllowAnyMethod()
+               .SetIsOriginAllowed((host) => true)
+               .AllowCredentials();
+    });
 });
-builder.Services.AddSignalR(); 
+
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<SignalRContext>();
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+// ? AutoMapper tanýmlamasý (SliderMapping ile birlikte tüm profilleri tanýr)
+builder.Services.AddAutoMapper(typeof(SliderMapping));
 
 builder.Services.AddScoped<IAboutService, AboutManager>();
 builder.Services.AddScoped<IAboutDal, EfAboutDal>();
@@ -75,12 +78,18 @@ builder.Services.AddScoped<IBasketDal, EfBasketDal>();
 
 builder.Services.AddScoped<INotificationService, NotificationManager>();
 builder.Services.AddScoped<INotificationDal, EfNotificationDal>();
-builder.Services.AddControllersWithViews()
-    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddScoped<IMessageService, MessageManager>();
+builder.Services.AddScoped<IMessageDal, EfMessageDal>();
+
+
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
