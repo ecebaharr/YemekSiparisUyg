@@ -44,7 +44,7 @@ namespace SignalR.DataAccessLayer.EntityFramework
         public int ProductCountByCategoryNameHamburger()
         {
             using var context = new SignalRContext();
-            return context.Products.Where(x => x.CategoryID == (context.Categories.Where(y => y.CategoryName == "Hamburger").Select
+            return context.Products.Where(x => x.CategoryID == (context.Categories.Where(y => y.CategoryName == "Hamburgerler").Select
             (z => z.CategoryID).FirstOrDefault())).Count();
         }
 
@@ -71,9 +71,39 @@ namespace SignalR.DataAccessLayer.EntityFramework
         {
 
             using var context = new SignalRContext();
-            return context.Products.Where(x => x.CategoryID == (context.Categories.Where(y => y.CategoryName == "Hamburger").Select(z => z.CategoryID).FirstOrDefault())).Average(w => w.Price
+            return context.Products.Where(x => x.CategoryID == (context.Categories.Where(y => y.CategoryName == "Hamburgerler").Select(z => z.CategoryID).FirstOrDefault())).Average(w => w.Price
                 );
 
+        }
+
+        public decimal ProductPriceBySteakBurger()
+        {
+            using var context = new SignalRContext();
+            return context.Products.Where(x => x.ProductName == "Tavuk Burger").Select(y => y.Price).FirstOrDefault();
+        }
+
+        public decimal TotalPriceByDrinkCategory()
+        {
+            using var context = new SignalRContext();
+            int id = context.Categories.Where(x => x.CategoryName == "İçecekler").Select(y => y.CategoryID).FirstOrDefault();
+            return context.Products.Where(x => x.CategoryID == id).Sum(y => y.Price); 
+        }
+
+        public decimal TotalPriceBySaladCategory()
+        {
+            using var context = new SignalRContext();
+            int id = context.Categories.Where(x => x.CategoryName == "Salatalar").Select(y => y.CategoryID).FirstOrDefault();
+            return context.Products.Where(x => x.CategoryID == id).Sum(y => y.Price);
+        }
+
+        public List<Product> GetLast9Products()
+        {
+            throw new NotImplementedException();
+        }
+
+        public decimal TotalProductPrice()
+        {
+            throw new NotImplementedException();
         }
     }
 }

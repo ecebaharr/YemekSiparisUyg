@@ -23,6 +23,7 @@ namespace SignalR.BusinessLayer.Concrete
             return _productDal.ProductNameByMaxPrice();
         }
 
+
         public string TProductNameByMinPrice()
         {
             return _productDal.ProductNameByMinPrice();
@@ -83,6 +84,26 @@ namespace SignalR.BusinessLayer.Concrete
         public decimal TProductAvgPriceByHamburger()
         {
             return _productDal.ProductAvgPriceByHamburger(); 
+        }
+
+        public decimal TProductPriceBySteakBurger()
+        {
+            return _productDal.ProductPriceBySteakBurger();
+        }
+
+        public decimal TTotalPriceByDrinkCategory()
+        {
+            return _productDal.TotalPriceByDrinkCategory();
+        }
+
+        public decimal TTotalPriceBySaladCategory()
+        {
+            return _productDal.TotalPriceBySaladCategory();
+        }
+
+        public List<Product> TGetLast9Products()
+        {
+            return _productDal.GetLast9Products();
         }
     }
 }

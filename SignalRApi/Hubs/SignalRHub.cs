@@ -82,7 +82,7 @@ namespace SignalRApi.Hubs
             var value3 = _menuTableService.TMenuTableCount();
             await Clients.All.SendAsync("ReceiveMenuTableCount", value3);
 
-            /* var value5 = _productService.TProductPriceAvg();
+            var value5 = _productService.TProductPriceAvg();
              await Clients.All.SendAsync("ReceiveProductPriceAvg", value5);
 
              var value6 = _productService.TProductAvgPriceByHamburger();
@@ -101,7 +101,23 @@ namespace SignalRApi.Hubs
              await Clients.All.SendAsync("ReceiveTotalPriceByDrinkCategory", value10);
 
              var value11 = _productService.TTotalPriceBySaladCategory();
-             await Clients.All.SendAsync("ReceiveTotalPriceBySaladCategory", value11); */
+             await Clients.All.SendAsync("ReceiveTotalPriceBySaladCategory", value11);
+            var categoryCount = _categoryService.TCategoryCount();
+            await Clients.All.SendAsync("ReceiveCategoryCount", categoryCount);
+
+            var productCount = _productService.TProductCount();
+            await Clients.All.SendAsync("ReceiveProductCount", productCount);
+
+            var reservationCount = _bookingService.TGetAll().Count();
+            await Clients.All.SendAsync("ReceiveReservationCount", reservationCount);
+            
+
+            var lastOrderPrice = _orderService.TLastOrderPrice();
+            await Clients.All.SendAsync("ReceiveLastOrderPrice", lastOrderPrice.ToString("0.00") + "₺");
+                
+
+
+
         }
         public async Task GetBookingList()
         {
