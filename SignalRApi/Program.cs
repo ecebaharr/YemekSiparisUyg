@@ -1,8 +1,9 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.BusinessLayer.Concrete;
-
+using SignalR.BusinessLayer.ValidationRules.BookingValidations;
 using SignalR.DataAccessLayer.Abstract;
 using SignalR.DataAccessLayer.Concrete;
 using SignalR.DataAccessLayer.EntityFramework;
@@ -26,6 +27,7 @@ builder.Services.AddCors(opt =>
 
 builder.Services.AddSignalR();
 
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingValidation>();
 builder.Services.AddDbContext<SignalRContext>();
 
 // ? AutoMapper tanýmlamasý (SliderMapping ile birlikte tüm profilleri tanýr)

@@ -38,13 +38,15 @@
                                         </h5>
                                     <p>
                                             @item.Description
-                                        </p>
+                                        </p>    
                                     <div class="options">
                                         <h6>
                                                 @item.Price₺
 
                                         </h6>
-                                        <a href="#" onclick="showproductid(@item.ProductID)">
+                                            <a href="#" onclick="showproductid(@item.ProductID, @ViewBag.v)">
+
+
                                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                                             <g>
                                             <g>
@@ -109,8 +111,8 @@
                 </div>
             </div>
             <div class="btn-box">
-                <a href="">
-                    View More
+                <a href="/Baskets/Index/@ViewBag.v">
+                    Sepete Git
                 </a>
             </div>
         </div>
@@ -121,30 +123,25 @@
     @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
 
     <script>
-        function showproductid(value) {
+         function showproductid(productId, menuTableId) {
             $.ajax({
                 type: 'POST',
-                url: '/Menu/AddBasket/' + value,
-                success: function () {
-                    swal({
-                        title: "Ürün Eklendi!",
-                        text: "Ürün başarıyla sepete eklendi.",
-                        icon: "success",
-                        buttons: {
-                            cancel: "Menüye Dön",
-                            confirm: "Sepete Git"
-                        }
-                    }).then((goToBasket) => {
-                        if (goToBasket) {
-                            window.location.href = "/Baskets/Index";
-                        }
-                    });
+                url: "/Menu/AddBasket",
+                data: {
+                    id: productId,
+                    menuTableId: menuTableId // MenuTableId burada gönderiliyor
                 },
-                error: function () {
-                    swal("Hata", "Sepete eklenirken sorun oluştu.", "error");
+                success: function () {
+                    swal("Seçilen Ürün ID:" + productId, "Seçtiğiniz Ürün Sepete Eklendi!", "success");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Hata:", error);
+                    console.log("Yanıt:", xhr.responseText);
                 }
+              
+                
             });
-        }
+        };
     </script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

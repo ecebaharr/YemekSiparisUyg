@@ -33,11 +33,11 @@
                     let tablehtml = `<div class="row">`;
                     $.each(value, (index, item) => {
                         if (item.status == true) {
-                            color="card card-stats card-success";
+                            color="card card-stats card-danger";
                             status = "Masa Dolu";
                         }
                         else {
-            color="card card-stats card-danger";
+            color="card card-stats card-success";
                             status = "Masa Boş";
                         }
                         tablehtml += `<div class="col-md-3">
