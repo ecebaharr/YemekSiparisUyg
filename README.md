@@ -55,8 +55,8 @@ Bu sayede kullanıcılar hem bilinçli beslenme konusunda destek alır hem de ü
 
 ### Admin Panel
 ![Admin Panel](admingiris.png)
-![Admin Panel](adminpanel(2).png)
-![Admin Panel](adminpanel(3).png)
+![Admin Panel](adminpanel (2).png)
+![Admin Panel](adminpanel (3).png)
 ![Admin Panel](adminpanel.png)
 ![Admin Panel](istatistikler.png)
 
